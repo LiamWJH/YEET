@@ -80,9 +80,23 @@ export class Runtime {
     }
     private opSub(a: Value, b: Value): Value {
         if (a.kind === "Num" && b.kind === "Num") {
-            return this.toNum(this.asNum(a) + this.asNum(b));
+            return this.toNum(this.asNum(a) - this.asNum(b));
         } else {
-            throw new Error(`addition between '${a}' and '${b}' does not work.`)
+            throw new Error(`subtraction between '${a}' and '${b}' does not work.`)
+        }
+    }
+    private opMul(a: Value, b: Value): Value {
+        if (a.kind === "Num" && b.kind === "Num") {
+            return this.toNum(this.asNum(a) * this.asNum(b));
+        } else {
+            throw new Error(`multiplication between '${a}' and '${b}' does not work.`)
+        }
+    }
+    private opDiv(a: Value, b: Value): Value {
+        if (a.kind === "Num" && b.kind === "Num") {
+            return this.toNum(this.asNum(a) / this.asNum(b));
+        } else {
+            throw new Error(`division between '${a}' and '${b}' does not work.`)
         }
     }
 
@@ -104,22 +118,31 @@ export class Runtime {
                         return;
                     }
                     case "PLUS_ASSIGN": {
-                        this.env.assign(stmt.name, this.env.get(stmt.name) + val);
+                        this.env.assign(stmt.name, this.opAdd(this.env.get(stmt.name), val));
                         return;
                     }
                     case "MINUS_ASSIGN": {
-                        this.env.assign(stmt.name, this.env.get(stmt.name) - val);
+                        this.env.assign(stmt.name, this.opSub(this.env.get(stmt.name), val));
                         return;
                     }
                     case "STAR_ASSIGN": {
-                        this.env.assign(stmt.name, this.env.get(stmt.name) * val);
+                        this.env.assign(stmt.name, this.opMul(this.env.get(stmt.name), val));
                         return;
                     }
                     case "SLASH_ASSIGN": {
-                        this.env.assign(stmt.name, this.env.get(stmt.name) / val);
+                        this.env.assign(stmt.name, this.opDiv(this.env.get(stmt.name), val));
                         return;
                     }
                 }
+            }
+
+            case "ExprStmt": {
+                this.eval(stmt.expr);
+                return;
+            }
+
+            case "Block": {
+                this.env
             }
         }
     }

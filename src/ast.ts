@@ -43,7 +43,6 @@ export type Expr =
 export type Stmt =
     | { kind: "Let"; name: string; init: Expr | null }
     | { kind: "Assign"; name: string; op: AssignOp; value: Expr }
-    | { kind: "Print"; expr: Expr }
     | { kind: "ExprStmt"; expr: Expr }
     | { kind: "Block"; stmts: Stmt[] }
     | { kind: "If"; cond: Expr; then: Stmt; otherwise?: Stmt }
