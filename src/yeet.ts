@@ -30,8 +30,6 @@ if (!args[0]) {
     let yeetParser = new Parser(yeetTokens);
     let yeetAst = yeetParser.parseProgram();
 
-    let yeetRuntime = new Runtime();
-    yeetRuntime.run(yeetAst);
     /**
     console.log(inspect(yeetAst, {
         depth: null, // infinite depth
@@ -39,6 +37,8 @@ if (!args[0]) {
         maxArrayLength: null,
         breakLength: Infinity
     }));
-     */
 
+    let yeetRuntime = new Runtime();
+    yeetRuntime.run(yeetAst);
+     */
 }

@@ -27,13 +27,15 @@ function asNativeT(n: Value): number | string | boolean | null {
 }
 
 export const printFn = {
+    value: null,
     kind: "NativeFn",
     name: "print",
     arity: null,
-    impl: (args: Value[]) => { console.log(args.map(asNativeT).join(" ")); return { kind: "Nil" }; },
+    impl: (args: Value[]) => { console.log(args.map(asNativeT).join(" ")); return { kind: "Nil", value: null };},
 } satisfies Extract<Value, { kind: "NativeFn" }>;
 
 export const scanFn = {
+    value: null,
     kind: "NativeFn",
     name: "scan",
     arity: null,

@@ -17,12 +17,17 @@ export class Env {
 
     get(name: string): Value {
         if (this.values.has(name)) return this.values.get(name)!;
+        if (this.parentenv) return this.parentenv.get(name);
         throw new Error(`cannot get value for a undefined variable '${name}'`);
     }
 
     assign(name: string, value: Value) {
         if (this.values.has(name)) {
             this.values.set(name, value);
+            return;
+        }
+        if (this.parentenv) {
+            this.parentenv.assign(name, value);
             return;
         }
         throw new Error(`cannot set value for a undefined variable '${name}'`);
@@ -56,7 +61,7 @@ export class Runtime {
     }
 
     run(program: Stmt[]) {
-        for (const stmt of program) this.exec(stmt); // Later exec will be a thing
+        for (const stmt of program) this.exec(stmt);
     }
 
     private toNum(n: number): Value {
@@ -69,7 +74,7 @@ export class Runtime {
         return { kind: "Bool", value: b };
     }
     private toNil(nil: null): Value {
-        return { kind: "Nil"};
+        return { kind: "Nil", value: null};
     }
 
     private asNum(n: Extract<Value, { kind: "Num" }>): number {
@@ -228,6 +233,7 @@ export class Runtime {
 
             case "Fn": {
                 const fnVal: Value = {
+                    value: null,
                     kind: "Fn",
                     name: stmt.name,
                     params: stmt.params,
@@ -258,6 +264,9 @@ export class Runtime {
             }
 
             case "While": {
+                //console.log(this.isTruthy(this.eval(stmt.cond)));
+                //console.log(this.eval(stmt.cond));
+                //console.log(stmt.cond);
                 while (this.isTruthy(this.eval(stmt.cond))) {
                     this.exec(stmt.body);
                 }
@@ -285,7 +294,7 @@ export class Runtime {
             return { kind: "Bool", value: expr.value };
 
             case "Nil":
-            return { kind: "Nil" };
+            return { kind: "Nil", value: null };
 
 
             case "Ident":
@@ -328,23 +337,23 @@ export class Runtime {
                         return this.opDiv(left, right);
 
                     case "EQUAL":
-                        return this.toBool(left == right);
+                        return this.toBool(left.kind === right.kind && left.value === right.value);
 
                     case "NOTEQ":
-                        return this.toBool(left != right);
+                        return this.toBool(left.kind !== right.kind || left.value !== right.value);
 
                     case "LT":
-                        return this.toBool(left < right);
-
+                        if (left.kind === right.kind) return this.toBool(left.value! < right.value!);
+                        else throw new Error("Tried to compare with different types");
                     case "LTE":
-                        return this.toBool(left <= right);
-
+                        if (left.kind === right.kind) return this.toBool(left.value! <= right.value!);
+                        else throw new Error("Tried to compare with different types");
                     case "GT":
-                        return this.toBool(left > right);
-
+                        if (left.kind === right.kind) return this.toBool(left.value! > right.value!);
+                        else throw new Error("Tried to compare with different types");
                     case "GTE":
-                        return this.toBool(left >= right);
-
+                        if (left.kind === right.kind) return this.toBool(left.value! >= right.value!);
+                        else throw new Error("Tried to compare with different types");
                     default:
                         throw new Error(`Unknown binary operator ${expr.op}`);
                 }

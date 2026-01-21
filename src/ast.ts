@@ -34,9 +34,9 @@ export type Value =
     | { kind: "Num"; value: number }
     | { kind: "Str"; value: string }
     | { kind: "Bool"; value: boolean }
-    | { kind: "Nil" }
-    | { kind: "Fn"; name: string | null; params: string[]; body: Stmt[]; closure: Env }
-    | { kind: "NativeFn"; name: string; arity: Number | null; impl: NativeImpl }
+    | { kind: "Nil"; value: null }
+    | { kind: "Fn"; name: string | null; params: string[]; body: Stmt[]; closure: Env; value: null }
+    | { kind: "NativeFn"; name: string; arity: Number | null; impl: NativeImpl; value: null }
 
 export type Expr =
     | { kind: "Num"; value: number }
