@@ -1,5 +1,5 @@
-# yeet-lang
-## You Edit Execute and Trash: prototyping faster than ever! 
+# slim-lang
+## slim
 
 To install dependencies:
 
@@ -10,7 +10,7 @@ bun install
 To run:
 
 ```bash
-bun run yeet.ts
+bun run filename.sl
 ```
 
 This project was created using `bun init` in bun v1.3.4. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime used.

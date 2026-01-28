@@ -12,28 +12,28 @@ const args =
 
 
 if (!args[0]) {
-    console.error("[YEET ERROR] No files were given to YEET.");
+    console.error("[slim ERROR] No files were given to SLIM.");
     process.exit(1)
 } else {
     const srcFile = Bun.file(args[0]);
 
     if (!(await srcFile.exists())) {
-        console.error(`[YEET ERROR] File '${args[0]}' does not exist.`);
+        console.error(`[slim ERROR] File '${args[0]}' does not exist.`);
         process.exit(1);
     }
 
     const src = await srcFile.text();
 
-    let yeetLexer = new Lexer(src);
-    let yeetTokens = yeetLexer.lex();
+    let slimLexer = new Lexer(src);
+    let slimTokens = slimLexer.lex();
 
-    let yeetParser = new Parser(yeetTokens);
-    let yeetAst = yeetParser.parseProgram();
-
-
+    let slimParser = new Parser(slimTokens);
+    let slimAst = slimParser.parseProgram();
 
 
 
-    let yeetRuntime = new Runtime();
-    yeetRuntime.run(yeetAst);
+
+
+    let slimRuntime = new Runtime();
+    slimRuntime.run(slimAst);
 }
