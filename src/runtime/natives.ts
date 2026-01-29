@@ -53,3 +53,9 @@ export const scanFn = {
         return { kind: "Str", value: line };
     },
 } satisfies Extract<Value, { kind: "NativeFn" }>;
+/**
+ * TODO: Add methd(a.x(b)), it should compile down to x(a,b)
+ * dont forget that we are NOT implementing extra node
+ * we are compiling a.b(x) down to b(x, a) in the parser
+ * in interp.ts we also have to see if a has b() later when we add OOP
+*/
