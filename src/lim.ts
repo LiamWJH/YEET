@@ -12,26 +12,26 @@ const args =
 
 
 if (!args[0]) {
-    console.error("[slim ERROR] No files were given to SLIM.");
+    console.error("[lim ERROR] No files were given to lim.");
     process.exit(1)
 } else {
     const srcFile = Bun.file(args[0]);
 
     if (!(await srcFile.exists())) {
-        console.error(`[slim ERROR] File '${args[0]}' does not exist.`);
+        console.error(`[lim ERROR] File '${args[0]}' does not exist.`);
         process.exit(1);
     }
 
     const src = await srcFile.text();
 
-    let slimLexer = new Lexer(src);
-    let slimTokens = slimLexer.lex();
+    let limLexer = new Lexer(src);
+    let limTokens = limLexer.lex();
 
-    let slimParser = new Parser(slimTokens);
-    let slimAst = slimParser.parseProgram();
+    let limParser = new Parser(limTokens);
+    let limAst = limParser.parseProgram();
 
-    if (slimParser.errors.length) {
-        for (const err of slimParser.errors) {
+    if (limParser.errors.length) {
+        for (const err of limParser.errors) {
             console.error(`[Code Pattern Error] ${err.message} at word type ${err.token.kind}, word ${err.token.lexeme}`);
         }
         process.exit(1);
@@ -59,6 +59,6 @@ if (!args[0]) {
      */
 
 
-    let slimRuntime = new Runtime();
-    slimRuntime.run(slimAst);
+    let limRuntime = new Runtime();
+    limRuntime.run(limAst);
 }
