@@ -1,4 +1,4 @@
-import type { Value } from "./ast";
+import type { Value } from "../parser/ast";
 
 
 function asNum(n: Extract<Value, { kind: "Num" }>): number {

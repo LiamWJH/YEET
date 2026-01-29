@@ -1,7 +1,7 @@
 import type { UnderlyingByteSource } from "stream/web";
 import type { AssignOp, BinaryOp, UnaryOp, Expr, Stmt } from "./ast";
-import type { Token, TokenKind } from "./token";
-import { TK } from "./token";
+import type { Token, TokenKind } from "../lexer/token";
+import { TK } from "../lexer/token";
 import { stringify } from "querystring";
 
 export class ParseError extends Error {
@@ -47,7 +47,7 @@ export class Parser {
     if (this.check(TK.RBRACE)) {
       throw this.error(this.current(), "Unexpected '}' (unmatched closing brace).");
     }
-    
+
     if (this.match(TK.IF)) return this.ifStmt();
     if (this.match(TK.WHILE)) return this.whileStmt();
     if (this.match(TK.RETURN)) return this.returnStmt();

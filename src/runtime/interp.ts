@@ -1,5 +1,5 @@
-import type { TokenKind, Token } from "./token";
-import type { AssignOp, BinaryOp, Expr, Stmt, Program, Value } from "./ast";
+import type { TokenKind, Token } from "../lexer/token";
+import type { AssignOp, BinaryOp, Expr, Stmt, Program, Value } from "../parser/ast";
 import { printFn, scanFn } from "./natives";
 
 export class InterpError extends Error {

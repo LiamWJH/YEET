@@ -1,7 +1,7 @@
-import { Lexer } from "./lexer";
-import { Parser } from "./parser";
+import { Lexer } from "./lexer/lexer";
+import { Parser } from "./parser/parser";
 import util from "node:util";
-import { Runtime } from "./interp";
+import { Runtime } from "./runtime/interp";
 
 
 const args =

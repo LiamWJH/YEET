@@ -1,5 +1,5 @@
 import type { Runtime } from "inspector/promises";
-import { Env } from "./interp";
+import { Env } from "../runtime/interp";
 
 export type AssignOp =
     | "ASSIGN"
