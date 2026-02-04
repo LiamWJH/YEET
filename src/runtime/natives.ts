@@ -1,4 +1,5 @@
-import type { Value } from "../parser/ast";
+import { expect } from "bun:test";
+import type { Value, NativeImpl } from "../parser/ast";
 
 
 function asNum(n: Extract<Value, { kind: "Num" }>): number {
@@ -31,6 +32,7 @@ function asNativeT(n: Value): number | string | boolean | any[] | false| true | 
     }
 }
 
+
 export const printFn = {
     value: null,
     kind: "NativeFn",
@@ -53,6 +55,88 @@ export const scanFn = {
         return { kind: "Str", value: line };
     },
 } satisfies Extract<Value, { kind: "NativeFn" }>;
+
+export const lenFn = {
+  value: null,
+  kind: "NativeFn",
+  name: "len",
+  arity: 1,
+  impl: (args: Value[]) => {
+    const arg = args[0];
+    if (!arg) throw new Error("len expects 1 argument");
+
+    if (arg.kind === "Num") throw new Error("cannot perform 'length' on type 'number'");
+    if (arg.kind === "Bool") throw new Error("cannot perform 'length' on type 'boolean'");
+    if (arg.kind === "Nil") throw new Error("cannot perform 'length' on type 'nil'");
+
+    if (arg.kind === "Str") return { kind: "Num", value: arg.value.length };
+    if (arg.kind === "Array") return { kind: "Num", value: arg.value.length };
+
+    throw new Error(`len not supported for ${arg.kind}`);
+  },
+} satisfies Extract<Value, { kind: "NativeFn" }>;
+
+export const typeFn = {
+  value: null,
+  kind: "NativeFn",
+  name: "type",
+  arity: 1,
+  impl: (args: Value[]) => {
+    const arg = args[0];
+    if (!arg) throw new Error("len expects 1 argument");
+
+    if (arg.kind === "Str") return { kind: "Str", value: "string" };
+    if (arg.kind === "Array") return { kind: "Str", value: "array" };
+    if (arg.kind === "Bool") return { kind: "Str", value: "boolean" };
+    if (arg.kind === "Fn") return { kind: "Str", value: "function wtf" };
+    if (arg.kind === "Index") return { kind: "Str", value: "index" };
+    if (arg.kind === "NativeFn") return { kind: "Str", value: "native function wtf" };
+    if (arg.kind === "Nil") return { kind: "Str", value: "nil" };
+    if (arg.kind === "Num") return { kind: "Str", value: "number" };
+    return { kind: "Str", value: "fucking internal error here " };
+  },
+} satisfies Extract<Value, { kind: "NativeFn" }>;
+
+
+export const biggestFn = {
+  value: null,
+  kind: "NativeFn",
+  name: "biggest",
+  arity: null,
+  impl: (args: Value[]) => {
+    if (args.length === 0) throw new Error("'biggest' expects at least 1 argument");
+    for (const v of args) {
+      if (v.kind !== "Num") throw new Error("'biggest' expects only numbers");
+    }
+    let m = (args[0] as Extract<Value, {kind:"Num"}>).value;
+    for (let i = 1; i < args.length; i++) {
+      const n = (args[i] as Extract<Value, {kind:"Num"}>).value;
+      if (n > m) m = n;
+    }
+    return { kind: "Num", value: m };
+  },
+} satisfies Extract<Value, { kind: "NativeFn" }>;
+
+export const smallestFn = {
+  value: null,
+  kind: "NativeFn",
+  name: "smallest",
+  arity: null,
+  impl: (args: Value[]) => {
+    if (args.length === 0) throw new Error("'smallest' expects at least 1 argument");
+    for (const v of args) {
+      if (v.kind !== "Num") throw new Error("'smallest' expects only numbers");
+    }
+    let m = (args[0] as Extract<Value, {kind:"Num"}>).value;
+    for (let i = 1; i < args.length; i++) {
+      const n = (args[i] as Extract<Value, {kind:"Num"}>).value;
+      if (n < m) m = n;
+    }
+    return { kind: "Num", value: m };
+  },
+} satisfies Extract<Value, { kind: "NativeFn" }>;
+
+
 /**
  * TODO: Add methd(a.x(b)), it should compile down to x(a,b)
  * dont forget that we are NOT implementing extra node

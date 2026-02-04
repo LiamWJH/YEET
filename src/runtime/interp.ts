@@ -1,6 +1,6 @@
 import type { TokenKind, Token } from "../lexer/token";
 import type { AssignOp, BinaryOp, Expr, Stmt, Program, Value } from "../parser/ast";
-import { printFn, scanFn } from "./natives";
+import { printFn, scanFn, lenFn, smallestFn, biggestFn } from "./natives";
 
 export class InterpError extends Error {
   constructor(message: string) {
@@ -210,6 +210,10 @@ export class Runtime {
     private installNatives() {
         this.env.define("print", printFn);
         this.env.define("scan", scanFn);
+        this.env.define("length", lenFn);
+        this.env.define("smallest", smallestFn);
+        this.env.define("biggest", biggestFn);
+
         this.env.define("true", { kind: "Bool", value: true});
         this.env.define("false", { kind: "Bool", value: false});
         this.env.define("nil", { kind: "Nil", value: null});
