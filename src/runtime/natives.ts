@@ -136,6 +136,23 @@ export const smallestFn = {
   },
 } satisfies Extract<Value, { kind: "NativeFn" }>;
 
+export const appendFn = {
+  value: null,
+  kind: "NativeFn",
+  name: "append",
+  arity: 2,
+  impl: (args: Value[]) => {
+    if (args.length !== 2) throw new Error("'append' expects 2 arguments");
+    const arr = args[0]!;
+    const item = args[1]!;
+
+    if (arr!.kind !== "Array") throw new Error("'append' needs an array for the first argument");
+
+    arr!.value!.push(item!);
+    return arr;
+  },
+} satisfies Extract<Value, { kind: "NativeFn" }>;
+
 
 /**
  * TODO: Add methd(a.x(b)), it should compile down to x(a,b)
