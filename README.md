@@ -1,7 +1,9 @@
 # lim-lang
-## lim
 
-To install dependencies:
+## Language purpose
+_" Simple is best, modern prototyping should be fast, limits should be gone. "_
+
+## To install dependencies:
 
 ```bash
 bun install
@@ -10,7 +12,5 @@ bun install
 To run:
 
 ```bash
-bun run limts.lim
+bun run foo.lim
 ```
-
-This project was created using `bun init` in bun v1.3.4. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime used.
