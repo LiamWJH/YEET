@@ -1,7 +1,8 @@
 # LIM
-_" Simple is best, modern prototyping should be fast, limits should be gone. "_
+## _" Modern prototyping should be fast. "_
+### OPEN TO CONTRIBUTORS!
 
-
+___
 ## To install dependencies:
 ```bash
 bun install
@@ -43,5 +44,5 @@ bun run lim.ts foo.lim
 
 
 ---
-## repository insights
+## Repository insights
 ![Alt](https://repobeats.axiom.co/api/embed/a8b2c51386e76eb44df19599b0c051a51351683d.svg "Repobeats analytics image")
